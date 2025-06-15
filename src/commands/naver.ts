@@ -24,16 +24,27 @@ export class NaverCommand extends Command {
     }
 
     for (const url of urls) {
-      if (!url.startsWith("https://m.entertain.naver.com/home/article")) {
-        return message.channel.send({
+      if (!this.isValidNaverArticleUrl(url)) {
+        await message.channel.send({
           content: `:x: Invalid URL: ${url}.\nPlease provide a valid Naver article URL.\n> Example: https://m.entertain.naver.com/home/article/022/0004042023`,
           flags: MessageFlags.SuppressEmbeds,
         });
+
+        continue;
       }
 
       const { title, images, date } = await this.naverExtractor(url);
-      if (!title || images.length === 0) {
-        return message.channel.send("Failed to extract data from the URL.");
+
+      if (!title) {
+        await message.channel.send(
+          `:x: Failed to extract data from URL: <${url}>`,
+        );
+        continue;
+      }
+
+      if (images.length === 0) {
+        await message.channel.send(`:x: No images found: <${url}>`);
+        continue;
       }
 
       const IMAGE_LIMIT = 10;
@@ -46,7 +57,7 @@ export class NaverCommand extends Command {
 
       await message.channel.send({
         content: `\`${date}\` **${title}**`,
-        files: images.splice(0, IMAGE_LIMIT),
+        files: images.slice(0, IMAGE_LIMIT),
         components: [row],
       });
 
@@ -59,6 +70,18 @@ export class NaverCommand extends Command {
     }
 
     return;
+  }
+
+  private isValidNaverArticleUrl(url: string): boolean {
+    try {
+      const urlObj = new URL(url);
+      return (
+        urlObj.hostname === "m.entertain.naver.com" &&
+        urlObj.pathname.startsWith("/home/article")
+      );
+    } catch {
+      return false;
+    }
   }
 
   private async naverExtractor(url: string): Promise<{

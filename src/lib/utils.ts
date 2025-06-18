@@ -1,8 +1,8 @@
 import {
-  container,
   type ChatInputCommandSuccessPayload,
   type Command,
   type ContextMenuCommandSuccessPayload,
+  container,
   type MessageCommandSuccessPayload,
 } from "@sapphire/framework";
 import { cyan } from "colorette";

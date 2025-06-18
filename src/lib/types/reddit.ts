@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noExplicitAny: i aint typing all that */
 export interface RedditResponse {
   data: PostData[];
 }

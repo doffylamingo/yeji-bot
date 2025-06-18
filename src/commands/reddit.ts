@@ -24,7 +24,7 @@ interface ProcessedPost {
   description: "download media from reddit",
 })
 export class RedditCommand extends Command {
-  override async messageRun(message: Message, args: Args) {
+  public override async messageRun(message: Message, args: Args) {
     await message.suppressEmbeds();
     if (!message.channel.isSendable()) return;
 
@@ -34,7 +34,7 @@ export class RedditCommand extends Command {
       return message.channel.send("Please provide at least one URL.");
     }
 
-    const ids = urls.map((url) => this.getIdFromRedditUrl(url)).join(",");
+    const ids = urls.map(url => this.getIdFromRedditUrl(url)).join(",");
 
     const posts = await this.fetchPostData(ids);
 
@@ -129,7 +129,7 @@ export class RedditCommand extends Command {
 
   private async fetchPostData(ids: string): Promise<ProcessedPost[]> {
     const posts = await this.fetchReddit(ids);
-    return posts.data.map((post) => this.processPostData(post));
+    return posts.data.map(post => this.processPostData(post));
   }
 
   private processPostData(post: PostData): ProcessedPost {
@@ -147,7 +147,7 @@ export class RedditCommand extends Command {
       default:
         if (post.is_gallery && post.media_metadata) {
           media = Object.keys(post.media_metadata).map(
-            (mediaItem) => `https://i.redd.it/${mediaItem}.jpg`,
+            mediaItem => `https://i.redd.it/${mediaItem}.jpg`,
           );
         }
         break;

@@ -36,7 +36,7 @@ export class UserEvent extends Listener {
     const pad = " ".repeat(7);
 
     console.log(
-      String.raw`
+      `
 ${line01} ${pad}${blc("1.0.0")}
 ${line02} ${pad}[${success}] Gateway
 ${line03}${dev ? ` ${pad}${blc("<")}${llc("/")}${blc(">")} ${llc("DEVELOPMENT MODE")}` : ""}
@@ -47,10 +47,10 @@ ${line03}${dev ? ` ${pad}${blc("<")}${llc("/")}${blc(">")} ${llc("DEVELOPMENT MO
   private printStoreDebugInformation() {
     const { client, logger } = this.container;
     const stores = [...client.stores.values()];
-    const last = stores.pop()!;
+    const last = stores.pop();
 
     for (const store of stores) logger.info(this.styleStore(store, false));
-    logger.info(this.styleStore(last, true));
+    if (last) logger.info(this.styleStore(last, true));
   }
 
   private styleStore(store: StoreRegistryValue, last: boolean) {

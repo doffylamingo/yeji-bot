@@ -1,11 +1,11 @@
 import { ApplyOptions } from "@sapphire/decorators";
-import { Args, Command } from "@sapphire/framework";
+import { type Args, Command } from "@sapphire/framework";
 import {
   ActionRowBuilder,
   ButtonBuilder,
   ButtonStyle,
-  MessageFlags,
   type Message,
+  MessageFlags,
 } from "discord.js";
 import parse from "node-html-parser";
 
@@ -100,11 +100,11 @@ export class NaverCommand extends Command {
 
     const images = root
       .querySelectorAll("#comp_news_article img")
-      .map((img) => img.getAttribute("src")?.split("?")[0] || "");
+      .map(img => img.getAttribute("src")?.split("?")[0] || "");
 
     const date = root.querySelector("em.date")?.textContent?.trim() || "";
 
-    const [year, month, day] = date?.split(" ")[0].split(".");
+    const [year, month, day] = date.split(" ")[0].split(".");
 
     const yymmdd = year.slice(2) + month + day;
 

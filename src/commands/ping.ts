@@ -1,6 +1,6 @@
 import { ApplyOptions } from "@sapphire/decorators";
 import { Command } from "@sapphire/framework";
-import { Message } from "discord.js";
+import type { Message } from "discord.js";
 
 @ApplyOptions<Command.Options>({
   description: "ping pong",

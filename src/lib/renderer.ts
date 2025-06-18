@@ -164,6 +164,14 @@ export class TwitterRenderer extends MediaRenderer {
     return url.split("/").pop() ?? "";
   }
 
+  private extractYYMMDD(text: string): string | null {
+    const match = text.match(/\b(?:\d{8}|\d{6})\b/);
+    if (!match) return null;
+
+    const raw = match[0];
+    return raw.length === 8 ? raw.slice(2) : raw;
+  }
+
   async getPost(url: string) {
     const id = this.extractId(url);
     const response = await fetch(
@@ -172,7 +180,12 @@ export class TwitterRenderer extends MediaRenderer {
     const { data } = (await response.json()) as TwitterResponse;
 
     const now = new Date(data.created_at);
-    const yymmdd = now.toISOString().slice(2, 10).replace(/-/g, "");
+
+    const postYYMMDD = this.extractYYMMDD(data.text);
+    const yymmdd = postYYMMDD
+      ? postYYMMDD
+      : now.toISOString().slice(2, 10).replace(/-/g, "");
+
     const content = `<:twitter:1382950305473364058> \`${yymmdd}\` **${data.user.name} (@${data.user.screen_name})**`;
 
     if (!("mediaDetails" in data))

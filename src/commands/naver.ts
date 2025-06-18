@@ -20,10 +20,6 @@ export class NaverCommand extends Command {
 
     for (const url of urls) {
       const { content, files } = await this.renderer.getPost(url);
-      if (files.length === 0) {
-        await message.channel.send(`No media found: <${url}>`);
-        continue;
-      }
 
       await this.renderer.send({
         message,

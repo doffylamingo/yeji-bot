@@ -177,7 +177,7 @@ export class TwitterRenderer extends MediaRenderer {
 
     if (!("mediaDetails" in data))
       return {
-        content,
+        content: `${content}\nNo media found.`,
         files: [],
       };
 

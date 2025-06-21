@@ -179,6 +179,12 @@ export class TwitterRenderer extends MediaRenderer {
     );
     const { data } = (await response.json()) as TwitterResponse;
 
+    if (!data)
+      return {
+        content: `${url}\nNo media found.`,
+        files: [],
+      };
+
     const now = new Date(data.created_at);
 
     const postYYMMDD = this.extractYYMMDD(data.text);
